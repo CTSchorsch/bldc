@@ -88,11 +88,12 @@
 //#define APPCONF_DEFAULT_USER		"appconf_example_ppm.h"
 //#define APPCONF_DEFAULT_USER		"appconf_custom.h"
 //#define APPCONF_DEFAULT_USER		"appconf_ellwee.h"
+//#define APPCONF_DEFAULT_USER		"appconf_dpv.h"
 
 /*
  * Set APP_CUSTOM_TO_USE to the name of the main C file of the custom application.
  */
-//#define APP_CUSTOM_TO_USE			"app_ellwee.c"
+#define APP_CUSTOM_TO_USE			"app_dpv.c"
 
 /*
  * Enable CAN-bus
