@@ -60,6 +60,8 @@
 #include "hw_mini4.h"
 #elif defined HW_VERSION_DAS_MINI
 #include "hw_das_mini.h"
+#elif defined HW_VERSION_GSVESC
+#include "hw_gsvesc.h"
 #else
 #error "No hardware version defined"
 #endif

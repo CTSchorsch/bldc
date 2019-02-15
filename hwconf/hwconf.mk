@@ -16,6 +16,7 @@ HWSRC =	hwconf/hw_40.c \
 	hwconf/hw_tp.c \
 	hwconf/hw_75_300.c \
 	hwconf/hw_mini4.c \
+	hwconf/hw_gsvesc.c \
 	hwconf/hw_das_mini.c
 
 HWINC = hwconf

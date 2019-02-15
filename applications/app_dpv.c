@@ -1,26 +1,16 @@
+#include "app.h"
 #include "ch.h" // ChibiOS
 #include "hal.h" // ChibiOS HAL
 #include "mc_interface.h" // Motor control functions
 #include "hw.h" // Pin mapping on this hardware
 #include "timeout.h" // To reset the timeout
+#include "commands.h"
 
 #define SPEED_STEP	10
 #define SPEED_MAX	100
 #define SPEED_MIN	10
 #define SPEED_OFF	0
 
-//Trigger and Speed Hall Pins
-#define HW_HALL_TRIGGER_GPIO            GPIOB
-#define HW_HALL_TRIGGER_PIN             5
-#define HW_HALL_ROTARY_A_GPIO           GPIOA
-#define HW_HALL_ROTARY_A_PIN            5
-#define HW_HALL_ROTARY_B_GPIO           GPIOA
-#define HW_HALL_ROTARY_B_PIN            6
-#define HW_HALL_ROTARY_A_EXTI_PORTSRC   EXTI_PortSourceGPIOA
-#define HW_HALL_ROTARY_A_EXTI_PINSRC    EXTI_PinSource5
-#define HW_HALL_ROTARY_A_EXTI_CH        EXTI9_5_IRQn
-#define HW_HALL_ROTARY_A_EXTI_LINE      EXTI_Line5
-#define HW_HALL_ROTARY_A_EXTI_ISR_VEC   EXTI9_5_IRQHandler
 
 //private variables
 static volatile bool stop_now = true;
@@ -32,16 +22,7 @@ static THD_FUNCTION(dpv_thread, arg);
 static THD_WORKING_AREA(dpv_thread_wa, 2048); // 2kb stack for this thread
 
 //private functions
-void dpv_rotary_isr(void);
-
-CH_IRQ_HANDLER(HW_HALL_ROTARY_A_EXTI_ISR_VEC) {
-        if (EXTI_GetITStatus(HW_HALL_ROTARY_A_EXTI_LINE) != RESET) {
-
-                dpv_rotary_isr();
-                // Clear the EXTI line pending bit
-                EXTI_ClearITPendingBit(HW_HALL_ROTARY_A_EXTI_LINE);
-        }
-}
+//void dpv_rotary_isr(void);
 
 
 void dpv_rotary_isr(void) {
@@ -78,7 +59,6 @@ void app_custom_start(void) {
         EXTI_InitTypeDef   EXTI_InitStructure;
 
 	stop_now = false;
-
 	// Set the UART TX pin as an input with pulldown
 	palSetPadMode(HW_HALL_TRIGGER_GPIO, HW_HALL_TRIGGER_PIN, PAL_MODE_INPUT_PULLUP);
 	palSetPadMode(HW_HALL_ROTARY_A_GPIO, HW_HALL_ROTARY_A_PIN, PAL_MODE_INPUT_PULLUP);
@@ -117,7 +97,8 @@ static THD_FUNCTION(dpv_thread, arg) {
                         return;
                 }
 
-		if ( ! palReadPad(HW_HALL_TRIGGER_GPIO, HW_HALL_TRIGGER_PIN)) {
+		if ( palReadPad(HW_HALL_TRIGGER_GPIO, HW_HALL_TRIGGER_PIN)) {
+
 			if (first) {
 				first=false;
 			}

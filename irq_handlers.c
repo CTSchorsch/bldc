@@ -25,6 +25,8 @@
 #include "mcpwm_foc.h"
 #include "hw.h"
 #include "encoder.h"
+#include "app.h"
+#include "commands.h"
 
 CH_IRQ_HANDLER(ADC1_2_3_IRQHandler) {
 	CH_IRQ_PROLOGUE();
@@ -59,3 +61,14 @@ CH_IRQ_HANDLER(TIM8_CC_IRQHandler) {
 		TIM_ClearITPendingBit(TIM8, TIM_IT_CC1);
 	}
 }
+
+CH_IRQ_HANDLER(HW_HALL_ROTARY_A_EXTI_ISR_VEC) {
+        if (EXTI_GetITStatus(HW_HALL_ROTARY_A_EXTI_LINE) != RESET) {
+
+                dpv_rotary_isr();
+                // Clear the EXTI line pending bit
+                EXTI_ClearITPendingBit(HW_HALL_ROTARY_A_EXTI_LINE);
+        }
+}
+
+

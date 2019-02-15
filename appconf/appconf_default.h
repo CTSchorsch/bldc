@@ -166,7 +166,8 @@
 
 // UART app
 #ifndef APPCONF_UART_BAUDRATE
-#define APPCONF_UART_BAUDRATE				115200
+//#define APPCONF_UART_BAUDRATE				115200
+#define APPCONF_UART_BAUDRATE				9600
 #endif
 
 // Nunchuk app
