@@ -27,13 +27,15 @@ static THD_WORKING_AREA(dpv_thread_wa, 2048); // 2kb stack for this thread
 
 void dpv_rotary_isr(void) {
 
-	if (! palReadPad(HW_HALL_ROTARY_B_GPIO, HW_HALL_ROTARY_B_PIN) ) {
+	commands_printf("Interrupt");
+	if ( palReadPad(HW_HALL_ROTARY_B_GPIO, HW_HALL_ROTARY_B_PIN) ) {
 		targetSpeed += SPEED_STEP;
 		if (targetSpeed > SPEED_MAX) targetSpeed = SPEED_MAX;
 	} else {
 		targetSpeed -= SPEED_STEP;
 		if (targetSpeed < SPEED_MIN) targetSpeed = SPEED_MIN;
 	}
+	commands_printf("TargetSpeed: %d",targetSpeed);
 }
 
 void app_custom_configure(app_configuration *conf)
@@ -92,17 +94,21 @@ static THD_FUNCTION(dpv_thread, arg) {
 
 	for(;;) {
 
+
                 if (stop_now) {
                         is_running = false;
                         return;
                 }
-
-		if ( palReadPad(HW_HALL_TRIGGER_GPIO, HW_HALL_TRIGGER_PIN)) {
+		if ( ! palReadPad(HW_HALL_TRIGGER_GPIO, HW_HALL_TRIGGER_PIN)) {
 
 			if (first) {
+				commands_printf("Trigger");
+				commands_printf("TargetSpeed: %d, MotorSpeed: %d", targetSpeed, motorSpeed);
+
 				first=false;
 			}
 			if (motorSpeed != targetSpeed) {
+
 				if (targetSpeed == 0) {
 			        	motorSpeed = 0;
 			        } else if ( motorSpeed < targetSpeed ) {
@@ -110,12 +116,15 @@ static THD_FUNCTION(dpv_thread, arg) {
 			        } else if (motorSpeed > targetSpeed ) {
 	        			motorSpeed --;
 			        }
+				commands_printf("Motorspeed: %d", motorSpeed);
 			}
+
 			mc_interface_set_duty(motorSpeed/100.);
 
 		} else {
 			first=true;
 			motorSpeed = SPEED_MIN;
+			mc_interface_set_duty(0);
 			mc_interface_release_motor();
 		}
 
