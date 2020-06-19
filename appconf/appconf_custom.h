@@ -22,5 +22,6 @@
 
 // Use custom user application
 #define APPCONF_APP_TO_USE				APP_CUSTOM
+#define APPCONF_TIMEOUT_MSEC            2000
 
 #endif

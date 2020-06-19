@@ -27,8 +27,8 @@
 #define HW_HAS_PHASE_SHUNTS
 //#define HW_HAS_PHASE_FILTERS
 #define INVERTED_SHUNT_POLARITY
-#define HW_HAS_NO_CAN
 #define HW_HAS_NO_ENC
+#define HW_HAS_NO_CAN
 
 // Macros
 #define LED_GREEN_GPIO			GPIOB
@@ -232,6 +232,8 @@
 #define READ_HALL2()			palReadPad(HW_HALL_ENC_GPIO2, HW_HALL_ENC_PIN2)
 #define READ_HALL3()			palReadPad(HW_HALL_ENC_GPIO3, HW_HALL_ENC_PIN3)
 
+//Override DEAD TIME
+#define HW_DEAD_TIME_NSEC       750.0
 
 // Default setting overrides
 #ifndef MCCONF_L_MIN_VOLTAGE

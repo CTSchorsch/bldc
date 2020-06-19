@@ -46,10 +46,10 @@
 #define MCCONF_L_CURR_MAX_RPM_FBRAKE_CC 1500
 
 // Minimum Input Voltage
-#define MCCONF_L_MIN_VOLTAGE 12
+#define MCCONF_L_MIN_VOLTAGE 8
 
 // Maximum Input Voltage
-#define MCCONF_L_MAX_VOLTAGE 50
+#define MCCONF_L_MAX_VOLTAGE 57
 
 // Battery Voltage Cutoff Start
 #define MCCONF_L_BATTERY_CUT_START 34
@@ -145,10 +145,10 @@
 #define MCCONF_HALL_ERPM 2000
 
 // Current KP
-#define MCCONF_FOC_CURRENT_KP 0.035
+#define MCCONF_FOC_CURRENT_KP 0.0081
 
 // Current KI
-#define MCCONF_FOC_CURRENT_KI 49.28
+#define MCCONF_FOC_CURRENT_KI 15.32
 
 // Switching Frequency
 #define MCCONF_FOC_F_SW 20000
@@ -199,7 +199,7 @@
 #define MCCONF_FOC_MOTOR_FLUX_LINKAGE 0.00511426
 
 // Observer Gain (x1M)
-#define MCCONF_FOC_OBSERVER_GAIN 6.23766e+6
+#define MCCONF_FOC_OBSERVER_GAIN 6.24e+6
 
 // Observer Gain At Minimum Duty
 #define MCCONF_FOC_OBSERVER_GAIN_SLOW 0.3
@@ -316,10 +316,10 @@
 #define MCCONF_S_PID_KP 0.0015
 
 // Speed PID Ki
-#define MCCONF_S_PID_KI 0.012
+#define MCCONF_S_PID_KI 0.004
 
 // Speed PID Kd
-#define MCCONF_S_PID_KD 5e-5
+#define MCCONF_S_PID_KD 6e-5
 
 // Speed PID Kd Filer
 #define MCCONF_S_PID_KD_FILTER 0.2
