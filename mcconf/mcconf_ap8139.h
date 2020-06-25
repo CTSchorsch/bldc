@@ -19,13 +19,13 @@
 #define MCCONF_L_CURRENT_MAX 60
 
 // Motor Current Max Brake
-#define MCCONF_L_CURRENT_MIN -60
+#define MCCONF_L_CURRENT_MIN 0
 
 // Battery Current Max
 #define MCCONF_L_IN_CURRENT_MAX 60
 
 // Battery Current Max Regen
-#define MCCONF_L_IN_CURRENT_MIN -40
+#define MCCONF_L_IN_CURRENT_MIN 0
 
 // Absolute Maximum Current
 #define MCCONF_L_MAX_ABS_CURRENT 150
@@ -46,10 +46,10 @@
 #define MCCONF_L_CURR_MAX_RPM_FBRAKE_CC 1500
 
 // Minimum Input Voltage
-#define MCCONF_L_MIN_VOLTAGE 8
+#define MCCONF_L_MIN_VOLTAGE 12
 
 // Maximum Input Voltage
-#define MCCONF_L_MAX_VOLTAGE 57
+#define MCCONF_L_MAX_VOLTAGE 50
 
 // Battery Voltage Cutoff Start
 #define MCCONF_L_BATTERY_CUT_START 34
@@ -190,13 +190,13 @@
 #define MCCONF_FOC_PLL_KI 30000
 
 // Motor Inductance (L)
-#define MCCONF_FOC_MOTOR_L 3.25695e-5
+#define MCCONF_FOC_MOTOR_L 3.257e-5
 
 // Motor Resistance (R)
-#define MCCONF_FOC_MOTOR_R 0.0612932
+#define MCCONF_FOC_MOTOR_R 0.0613
 
 // Motor Flux Linkage (λ)
-#define MCCONF_FOC_MOTOR_FLUX_LINKAGE 0.00511426
+#define MCCONF_FOC_MOTOR_FLUX_LINKAGE 0.005114
 
 // Observer Gain (x1M)
 #define MCCONF_FOC_OBSERVER_GAIN 6.24e+6
@@ -253,7 +253,7 @@
 #define MCCONF_FOC_SL_ERPM 4000
 
 // Sample in V0 and V7
-#define MCCONF_FOC_SAMPLE_V0_V7 1
+#define MCCONF_FOC_SAMPLE_V0_V7 0
 
 // High Current Sampling Mode
 #define MCCONF_FOC_SAMPLE_HIGH_CURRENT 0
@@ -313,7 +313,7 @@
 #define MCCONF_GPD_CURRENT_KI 50
 
 // Speed PID Kp
-#define MCCONF_S_PID_KP 0.0015
+#define MCCONF_S_PID_KP 0.003
 
 // Speed PID Ki
 #define MCCONF_S_PID_KI 0.004

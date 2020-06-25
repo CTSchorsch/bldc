@@ -14,7 +14,7 @@
 
 #define SPEED_STEP	0.05
 #define SPEED_MAX	1.00
-#define SPEED_MIN	0.10
+#define SPEED_MIN	0.20
 #define SPEED_OFF	0.00
 
 //private variables
@@ -103,7 +103,7 @@ void checkSpeed( void ) {
 
     input = (input << 1) | (palReadPad(HW_HALL_ROTARY_A_GPIO,HW_HALL_ROTARY_A_PIN) & 0x01);
 
-    if ( (input & 0x03) == 0x02) { //falling edge
+    if ( (input & 0x03) == 0xF0) { //falling edge
         if ( palReadPad(HW_HALL_ROTARY_B_GPIO, HW_HALL_ROTARY_B_PIN) ) {
             targetSpeed += SPEED_STEP;
             if (targetSpeed > SPEED_MAX) targetSpeed = SPEED_MAX;
