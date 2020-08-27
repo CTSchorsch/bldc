@@ -14,7 +14,7 @@
 
 #define SPEED_STEP	0.05
 #define SPEED_MAX	1.00
-#define SPEED_MIN	0.20
+#define SPEED_MIN	0.10
 #define SPEED_OFF	0.00
 
 //private variables
@@ -29,31 +29,31 @@ static THD_WORKING_AREA(dpv_thread_wa, 2048); // 2kb stack for this thread
 //private functions
 //void dpv_rotary_isr(void);
 
-/*
-CH_IRQ_HANDLER(HW_HALL_ROTARY_A_EXTI_ISR_VEC) {
-        if (EXTI_GetITStatus(HW_HALL_ROTARY_A_EXTI_LINE) != RESET) {
-                dpv_rotary_isr();
+
+//CH_IRQ_HANDLER(HW_HALL_ROTARY_A_EXTI_ISR_VEC) {
+//        if (EXTI_GetITStatus(HW_HALL_ROTARY_A_EXTI_LINE) != RESET) {
+//                dpv_rotary_isr();
                 // Clear the EXTI line pending bit
-                EXTI_ClearITPendingBit(HW_HALL_ROTARY_A_EXTI_LINE);
-        EXTI_ClearFlag(HW_HALL_ROTARY_A_EXTI_LINE);
-        }
-}
+//                EXTI_ClearITPendingBit(HW_HALL_ROTARY_A_EXTI_LINE);
+//        EXTI_ClearFlag(HW_HALL_ROTARY_A_EXTI_LINE);
+//        }
+//}
 
 
-void dpv_rotary_isr(void) {
+//void dpv_rotary_isr(void) {
 
 //	commands_printf("Interrupt");
 //    commands_printf("A: %d, B: %d\n", palReadPad(HW_HALL_ROTARY_A_GPIO, HW_HALL_ROTARY_A_PIN),palReadPad(HW_HALL_ROTARY_B_GPIO, HW_HALL_ROTARY_B_PIN));
-	if ( palReadPad(HW_HALL_ROTARY_B_GPIO, HW_HALL_ROTARY_B_PIN) ) {
-		targetSpeed += SPEED_STEP;
-		if (targetSpeed > SPEED_MAX) targetSpeed = SPEED_MAX;
-	} else {
-		targetSpeed -= SPEED_STEP;
-		if (targetSpeed < SPEED_MIN) targetSpeed = SPEED_MIN;
-	}
+//	if ( !palReadPad(HW_HALL_ROTARY_B_GPIO, HW_HALL_ROTARY_B_PIN) ) {
+//		targetSpeed += SPEED_STEP;
+//		if (targetSpeed > SPEED_MAX) targetSpeed = SPEED_MAX;
+//	} else {
+//		targetSpeed -= SPEED_STEP;
+//		if (targetSpeed < SPEED_MIN) targetSpeed = SPEED_MIN;
+//	}
 	//commands_printf("Target Speed: %01.2f", targetSpeed);
-}
-*/
+//}
+
 
 void app_custom_configure(app_configuration *conf)
 {
@@ -77,20 +77,20 @@ void app_custom_start(void) {
 	palSetPadMode(HW_HALL_TRIGGER_GPIO, HW_HALL_TRIGGER_PIN, PAL_MODE_INPUT_PULLUP);
 	palSetPadMode(HW_HALL_ROTARY_A_GPIO, HW_HALL_ROTARY_A_PIN, PAL_MODE_INPUT_PULLUP);
 	palSetPadMode(HW_HALL_ROTARY_B_GPIO, HW_HALL_ROTARY_B_PIN, PAL_MODE_INPUT_PULLUP);
-/*
+
     // Interrupt on HALL ROTARY A Pin
     // Connect EXTI Line to pin
-    SYSCFG_EXTILineConfig(HW_HALL_ROTARY_A_EXTI_PORTSRC, HW_HALL_ROTARY_A_EXTI_PINSRC);
+  //  SYSCFG_EXTILineConfig(HW_HALL_ROTARY_A_EXTI_PORTSRC, HW_HALL_ROTARY_A_EXTI_PINSRC);
     // Configure EXTI Line
-    EXTI_InitStructure.EXTI_Line = HW_HALL_ROTARY_A_EXTI_LINE;
-    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
-    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-    EXTI_Init(&EXTI_InitStructure);
+   // EXTI_InitStructure.EXTI_Line = HW_HALL_ROTARY_A_EXTI_LINE;
+   // EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+   // EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+   // EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+   // EXTI_Init(&EXTI_InitStructure);
 
     // Enable and set EXTI Line Interrupt to the highest priority
-    nvicEnableVector(HW_HALL_ROTARY_A_EXTI_CH,STM32_EXT_EXTI10_15_IRQ_PRIORITY) ;
-*/
+    //nvicEnableVector(HW_HALL_ROTARY_A_EXTI_CH,STM32_EXT_EXTI10_15_IRQ_PRIORITY) ;
+
 	// Start the dpv thread
 	chThdCreateStatic(dpv_thread_wa, sizeof(dpv_thread_wa), NORMALPRIO, dpv_thread, NULL);
 
@@ -101,10 +101,10 @@ void checkSpeed( void ) {
 
     static char input;
 
-    input = (input << 1) | (palReadPad(HW_HALL_ROTARY_A_GPIO,HW_HALL_ROTARY_A_PIN) & 0x01);
+    input = (input << 1) | (palReadPad(HW_HALL_ROTARY_B_GPIO,HW_HALL_ROTARY_B_PIN) & 0x01);
 
-    if ( (input & 0x03) == 0xF0) { //falling edge
-        if ( palReadPad(HW_HALL_ROTARY_B_GPIO, HW_HALL_ROTARY_B_PIN) ) {
+    if ( (input & 0x03) == 0x02) { //falling edge
+        if ( palReadPad(HW_HALL_ROTARY_A_GPIO, HW_HALL_ROTARY_A_PIN) ) {
             targetSpeed += SPEED_STEP;
             if (targetSpeed > SPEED_MAX) targetSpeed = SPEED_MAX;
         } else {
@@ -130,41 +130,36 @@ static THD_FUNCTION(dpv_thread, arg) {
 		// Reset the timeout
     	timeout_reset();
 
-        checkSpeed();
+		float motorSpeed=SPEED_OFF;
 		const volatile mc_configuration *mcconf = mc_interface_get_configuration();
-		float motorSpeed=SPEED_MIN;
 
-
-        // Apply ramping
-
-        static systime_t last_time = 0;
-        static float motorSpeed_val_ramp = 0.0;
- 		float ramp_time; 
-
+        checkSpeed();
 		if ( ! palReadPad(HW_HALL_TRIGGER_GPIO, HW_HALL_TRIGGER_PIN)) {
 			motorSpeed=targetSpeed;
 		} else {
 			motorSpeed=SPEED_OFF;
 		}
-  		ramp_time = fabsf(motorSpeed) > fabsf(motorSpeed_val_ramp) ? 5.0 : 1.0;
-    	if (fabsf(motorSpeed) > 0.01) {
-            ramp_time = fminf(3.0, 3.0);
-        }
-   		if (ramp_time > 0.01) {
-            const float ramp_step = (float)ST2MS(chVTTimeElapsedSinceX(last_time)) / (ramp_time * 1000.0);
-            utils_step_towards(&motorSpeed_val_ramp, motorSpeed, ramp_step);
-            last_time = chVTGetSystemTimeX();
-            if (motorSpeed != SPEED_OFF) {
-       			motorSpeed = motorSpeed_val_ramp;
-            }
-       	}
-//       	mc_interface_set_duty(utils_map(motorSpeed, 0, 1.0, 0, mcconf->l_max_duty));
-//       	mc_interface_set_pid_speed(utils_map(motorSpeed, 0, 1.0, 0, MAX_ERPM);
-            if (motorSpeed != SPEED_OFF) {
-               	mc_interface_set_pid_speed(motorSpeed*mcconf->l_max_erpm);
+
+        // Apply ramping
+        static systime_t last_time = 0;
+        static float motorSpeed_val_ramp = 0.0;
+ 		float ramp_time; 
+  		ramp_time = fabsf(motorSpeed) > fabsf(motorSpeed_val_ramp) ? 3.0 : 1.0;
+
+        const float ramp_step = (float)ST2MS(chVTTimeElapsedSinceX(last_time)) / (ramp_time * 1000.0);
+        last_time = chVTGetSystemTimeX();
+        utils_step_towards(&motorSpeed_val_ramp, motorSpeed, ramp_step);
+
+        if (targetSpeed!=SPEED_OFF) {
+            if (fabs(motorSpeed_val_ramp > 0.01)) {
+//           	mc_interface_set_pid_speed(fabs(motorSpeed_val_ramp*mcconf->l_max_erpm));
+            mc_interface_set_duty(fabs(motorSpeed_val_ramp));
             } else {
-        		mc_interface_release_motor();
+      	    	mc_interface_release_motor();
             }
-        chThdSleepMilliseconds(5);
+        } else {
+      	    	mc_interface_release_motor();
+        }
+        chThdSleepMilliseconds(10);
 	}
 }

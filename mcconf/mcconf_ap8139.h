@@ -31,10 +31,10 @@
 #define MCCONF_L_MAX_ABS_CURRENT 150
 
 // Max ERPM Reverse
-#define MCCONF_L_RPM_MIN -37800
+#define MCCONF_L_RPM_MIN -50000
 
 // Max ERPM
-#define MCCONF_L_RPM_MAX 37800
+#define MCCONF_L_RPM_MAX 50000
 
 // ERPM Limit Start
 #define MCCONF_L_RPM_START 0.9
@@ -106,7 +106,7 @@
 #define MCCONF_SL_MAX_FB_CURR_DIR_CHANGE 10
 
 // Cycle Integrator Limit
-#define MCCONF_SL_CYCLE_INT_LIMIT 62
+#define MCCONF_SL_CYCLE_INT_LIMIT 121.58
 
 // Phase Advance at BR ERPM
 #define MCCONF_SL_PHASE_ADVANCE_AT_BR 0.8
@@ -115,7 +115,7 @@
 #define MCCONF_SL_CYCLE_INT_BR 80000
 
 // BEMF Coupling
-#define MCCONF_SL_BEMF_COUPLING_K 600
+#define MCCONF_SL_BEMF_COUPLING_K 900
 
 // Hall Table [0]
 #define MCCONF_HALL_TAB_0 -1
@@ -199,10 +199,10 @@
 #define MCCONF_FOC_MOTOR_FLUX_LINKAGE 0.005114
 
 // Observer Gain (x1M)
-#define MCCONF_FOC_OBSERVER_GAIN 6.24e+6
+#define MCCONF_FOC_OBSERVER_GAIN 1e+8
 
 // Observer Gain At Minimum Duty
-#define MCCONF_FOC_OBSERVER_GAIN_SLOW 0.3
+#define MCCONF_FOC_OBSERVER_GAIN_SLOW 0.15
 
 // Duty Downramp Kp
 #define MCCONF_FOC_DUTY_DOWNRAMP_KP 10
@@ -253,7 +253,7 @@
 #define MCCONF_FOC_SL_ERPM 4000
 
 // Sample in V0 and V7
-#define MCCONF_FOC_SAMPLE_V0_V7 0
+#define MCCONF_FOC_SAMPLE_V0_V7 1
 
 // High Current Sampling Mode
 #define MCCONF_FOC_SAMPLE_HIGH_CURRENT 0
@@ -313,13 +313,13 @@
 #define MCCONF_GPD_CURRENT_KI 50
 
 // Speed PID Kp
-#define MCCONF_S_PID_KP 0.003
+#define MCCONF_S_PID_KP 0.0004
 
 // Speed PID Ki
-#define MCCONF_S_PID_KI 0.004
+#define MCCONF_S_PID_KI 0.001
 
 // Speed PID Kd
-#define MCCONF_S_PID_KD 6e-5
+#define MCCONF_S_PID_KD 3e-5
 
 // Speed PID Kd Filer
 #define MCCONF_S_PID_KD_FILTER 0.2

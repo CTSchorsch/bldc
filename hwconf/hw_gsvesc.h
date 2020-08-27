@@ -25,10 +25,10 @@
 // HW properties
 #define HW_HAS_3_SHUNTS
 #define HW_HAS_PHASE_SHUNTS
-//#define HW_HAS_PHASE_FILTERS
+#define HW_HAS_PHASE_FILTERS
 #define INVERTED_SHUNT_POLARITY
 #define HW_HAS_NO_ENC
-#define HW_HAS_NO_CAN
+//#define HW_HAS_NO_CAN
 
 // Macros
 #define LED_GREEN_GPIO			GPIOB
@@ -128,13 +128,13 @@
 // Double samples in beginning and end for positive current measurement.
 // Useful when the shunt sense traces have noise that causes offset.
 #ifndef CURR1_DOUBLE_SAMPLE
-#define CURR1_DOUBLE_SAMPLE		0
+#define CURR1_DOUBLE_SAMPLE		1
 #endif
 #ifndef CURR2_DOUBLE_SAMPLE
-#define CURR2_DOUBLE_SAMPLE		0
+#define CURR2_DOUBLE_SAMPLE		1
 #endif
 #ifndef CURR3_DOUBLE_SAMPLE
-#define CURR3_DOUBLE_SAMPLE		0
+#define CURR3_DOUBLE_SAMPLE		1
 #endif
 
 // COMM-port ADC GPIOs
